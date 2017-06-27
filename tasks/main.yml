@@ -1,0 +1,31 @@
+---
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+
+- name: Add cloud user to sudoers group
+  user: name={{ user }} groups="wheel" append=yes state=present createhome=yes shell="/bin/bash" 
+  
+- name: Add SSH key
+  authorized_key:
+      user: "{{ user }}"
+      state: present
+      key: "{{ lookup('file', '{{ path_to_public_key }}') }}"
+  
+- name: Disable empty password login
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PermitEmptyPasswords" line="PermitEmptyPasswords no" state=present
+    
+- name: Disable remote root login
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PermitRootLogin" line="PermitRootLogin no" state=present
+    
+- name: Disable password login
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PasswordAuthentication" line="PasswordAuthentication no" state=present
+  
+- name: Restart sshd service
+  service:
+      name: sshd
+      state: restarted
+

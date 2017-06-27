@@ -1,0 +1,6 @@
+---
+user: cloud-user
+path_to_public_key: ~/.ssh/mcp-kp.pub
+
+# Where is ssh config is located at
+sshd_config: /etc/ssh/sshd_config
