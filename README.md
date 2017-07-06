@@ -3,6 +3,11 @@ Role Name
 
 This role will help secure a linux server created with just password authentication. This will disable password auth, disable the root remote login, and inject a certificate to be used for the provided user. This is primarily being used for servers in 
 the Dimension Data Managed cloud platform. At the moment this is only tested on Centos.
+  
+  
+Please be aware that this disables password verification for all users in the wheel group. This is work in progress, so will look at doing something a bit more 'best practice' here.
+  
+  
 
 Requirements
 ------------
